@@ -74,10 +74,10 @@ public class ConfirmSubmissionFragment extends Fragment {
                     progressDialog.show();
 
                     RetrofitInterface retrofitInterface = RetrofitSubmitProjectIntance.getRetrofitInstance().create(RetrofitInterface.class);
-                    Call<SubmitProjectEntity> submitProject = retrofitInterface.submit(restoredEmailAddress, restoredFirstName, restoredLastName, restoredProjectLink);
-                    submitProject.enqueue(new Callback<SubmitProjectEntity>() {
+                    Call<Void> submitProject = retrofitInterface.submit(restoredEmailAddress, restoredFirstName, restoredLastName, restoredProjectLink);
+                    submitProject.enqueue(new Callback<Void>() {
                         @Override
-                        public void onResponse(Call<SubmitProjectEntity> call, Response<SubmitProjectEntity> response) {
+                        public void onResponse(Call<Void> call, Response<Void> response) {
 
                             if (response.isSuccessful()) {
                                 progressDialog.dismiss();
@@ -93,7 +93,7 @@ public class ConfirmSubmissionFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(Call<SubmitProjectEntity> call, Throwable t) {
+                        public void onFailure(Call<Void> call, Throwable t) {
                             progressDialog.dismiss();
                             Toast.makeText(getActivity(), "Something went wrong...Please try later.", Toast.LENGTH_LONG).show();
                             Log.d("Unable to submit post to API.", t.getStackTrace().toString());
