@@ -1,4 +1,4 @@
-package com.damio.gadsleaderboard.ui.main;
+package com.damio.gadsleaderboard.skilliqleaders;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -90,7 +90,6 @@ public class SkillIQLeadersFragment extends Fragment implements SwipeRefreshLayo
         }
 
     }
-
 
     private void setDataInRecyclerView(List<SkillIQLeadersEntity> skillIQLeadersEntityList) {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

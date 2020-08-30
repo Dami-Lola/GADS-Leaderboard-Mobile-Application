@@ -1,4 +1,4 @@
-package com.damio.gadsleaderboard.ui.main;
+package com.damio.gadsleaderboard.learningleaders;
 
 import android.app.ProgressDialog;
 import android.content.Context;

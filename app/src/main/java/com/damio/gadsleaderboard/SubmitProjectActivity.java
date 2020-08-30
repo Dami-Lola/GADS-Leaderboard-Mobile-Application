@@ -49,7 +49,6 @@ public class SubmitProjectActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.submitProjectButton:
-
                     firstNameString = firstName.getText().toString().trim();
                     lastNameString = lastName.getText().toString().trim();
                     emailAddressString = emailAddress.getText().toString().trim();
@@ -59,7 +58,6 @@ public class SubmitProjectActivity extends AppCompatActivity {
                         pushData();
                     break;
             }
-
         }
     };
 

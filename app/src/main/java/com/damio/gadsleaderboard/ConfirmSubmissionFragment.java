@@ -1,5 +1,6 @@
 package com.damio.gadsleaderboard;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -17,8 +18,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.damio.gadsleaderboard.R;
+import com.damio.gadsleaderboard.domain.RetrofitInterface;
+import com.damio.gadsleaderboard.domain.RetrofitSubmitProjectIntance;
+import com.damio.gadsleaderboard.popupclasses.SubmissionFailedFragment;
+import com.damio.gadsleaderboard.popupclasses.SubmissionSuccessfulFragment;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -29,6 +41,8 @@ public class ConfirmSubmissionFragment extends Fragment {
         // Required empty public constructor
     }
 
+    SubmissionSuccessfulFragment submissionSuccessfulFragment;
+    SubmissionFailedFragment submissionFailedFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,8 +53,6 @@ public class ConfirmSubmissionFragment extends Fragment {
         yesAnswer.setOnClickListener(selectedClicked);
         ImageView existButton = root.findViewById(R.id.exitButton);
         existButton.setOnClickListener(selectedClicked);
-
-
         return root;
     }
 
@@ -56,11 +68,37 @@ public class ConfirmSubmissionFragment extends Fragment {
                     restoredEmailAddress = prefs.getString("emailAddress", null);
                     restoredProjectLink = prefs.getString("projectLink", null);
 
+                    final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                    progressDialog.setCancelable(false);
+                    progressDialog.setMessage("Please Wait");
+                    progressDialog.show();
 
-                    Log.i(TAG, "FIRSTNAME: " + restoredFirstName);
-                    Log.i(TAG, "LASTNAME: " + restoredLastName);
-                    Log.i(TAG, "EMAILADDRESS: " + restoredEmailAddress);
-                    Log.i(TAG, "PROJECTLINK: " + restoredProjectLink);
+                    RetrofitInterface retrofitInterface = RetrofitSubmitProjectIntance.getRetrofitInstance().create(RetrofitInterface.class);
+                    Call<SubmitProjectEntity> submitProject = retrofitInterface.submit(restoredEmailAddress, restoredFirstName, restoredLastName, restoredProjectLink);
+                    submitProject.enqueue(new Callback<SubmitProjectEntity>() {
+                        @Override
+                        public void onResponse(Call<SubmitProjectEntity> call, Response<SubmitProjectEntity> response) {
+
+                            if (response.isSuccessful()) {
+                                progressDialog.dismiss();
+                                submissionSuccessfulFragment = new SubmissionSuccessfulFragment();
+                                submissionSuccessfulFragment.showPopupWindow(getView().getRootView());
+
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(), "Unable to submit project...Please try later.", Toast.LENGTH_LONG).show();
+                                submissionFailedFragment = new SubmissionFailedFragment();
+                                submissionFailedFragment.showPopupWindow(getView().getRootView());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SubmitProjectEntity> call, Throwable t) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), "Something went wrong...Please try later.", Toast.LENGTH_LONG).show();
+                            Log.d("Unable to submit post to API.", t.getStackTrace().toString());
+                        }
+                    });
                     break;
                 case R.id.exitButton:
                     getActivity().finish();

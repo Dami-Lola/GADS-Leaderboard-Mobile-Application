@@ -54,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:text="300 "
+                    android:text="300"
                     tools:layout_editor_absoluteX="112dp"
                     tools:layout_editor_absoluteY="60dp" />
 
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:text="@string/skill_iq_score"
+                    android:text="  skill IQ Score, "
                     tools:layout_editor_absoluteX="144dp"
                     tools:layout_editor_absoluteY="60dp" />
 

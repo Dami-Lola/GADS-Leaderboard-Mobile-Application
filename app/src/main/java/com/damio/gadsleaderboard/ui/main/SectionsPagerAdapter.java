@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.damio.gadsleaderboard.R;
+import com.damio.gadsleaderboard.learningleaders.LearningLeadersFragment;
+import com.damio.gadsleaderboard.skilliqleaders.SkillIQLeadersFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
